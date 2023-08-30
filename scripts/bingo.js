@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDiceRoll = void 0;
+exports.testChannel = exports.getDiceRoll = void 0;
 var handling_1 = require("./errors/handling");
 var utils_1 = require("./utils/utils");
 function getDiceRoll(msg) {
@@ -15,3 +15,10 @@ function getDiceRoll(msg) {
     }
 }
 exports.getDiceRoll = getDiceRoll;
+function testChannel(msg, client) {
+    var channelId = msg.channelId;
+    var channel = client.channels.cache.get(channelId);
+    var channelName = channel.name;
+    msg.reply("".concat(channelName));
+}
+exports.testChannel = testChannel;

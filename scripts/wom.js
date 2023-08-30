@@ -47,6 +47,7 @@ var discord_js_1 = require("discord.js");
 var messages_js_1 = require("../constants/messages.js");
 var luxon_1 = require("luxon");
 var blacklist_1 = require("../constants/blacklist");
+var env_constants_js_1 = require("../constants/env.constants.js");
 var womClient = new utils_1.WOMClient();
 function getAllDisplayNames(groupId) {
     return __awaiter(this, void 0, void 0, function () {
@@ -72,7 +73,7 @@ function getAllDisplayNames(groupId) {
     });
 }
 exports.getAllDisplayNames = getAllDisplayNames;
-function getTopTen(msg, groupId, metric) {
+function getTopTen(msg, metric) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, sortedPointsArray, memberships, sortedMemberships, e_2;
         return __generator(this, function (_b) {
@@ -87,7 +88,7 @@ function getTopTen(msg, groupId, metric) {
                     }
                     return [3 /*break*/, 4];
                 case 1:
-                    getPetsOrLogTopTen(msg, groupId, metric);
+                    getPetsOrLogTopTen(msg, metric);
                     return [3 /*break*/, 6];
                 case 2: return [4 /*yield*/, (0, points_1.getAllPointsSorted)()];
                 case 3:
@@ -96,7 +97,7 @@ function getTopTen(msg, groupId, metric) {
                         .slice(0, 10);
                     msg.reply((0, utils_2.buildMessage)(sortedPointsArray, metric));
                     return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, womClient.groups.getGroupDetails(groupId)];
+                case 4: return [4 /*yield*/, womClient.groups.getGroupDetails(env_constants_js_1.GROUP_ID)];
                 case 5:
                     memberships = (_b.sent()).memberships;
                     sortedMemberships = (0, utils_2.sortMembershipsByMetric)(memberships, metric)
@@ -115,7 +116,7 @@ function getTopTen(msg, groupId, metric) {
     });
 }
 exports.getTopTen = getTopTen;
-function getMonthlyGains(msg, groupId, periodObject) {
+function getMonthlyGains(msg, periodObject) {
     if (periodObject === void 0) { periodObject = {}; }
     return __awaiter(this, void 0, void 0, function () {
         var gainsPeriod, sdString, edString, ehbStats, ehpStats, expStats, message, e_3;
@@ -126,13 +127,13 @@ function getMonthlyGains(msg, groupId, periodObject) {
                     gainsPeriod = (0, utils_2.getStartToEndPeriod)(periodObject);
                     sdString = luxon_1.DateTime.fromISO(gainsPeriod.startDate).toFormat('d LLLL yyyy');
                     edString = luxon_1.DateTime.fromISO(gainsPeriod.endDate).toFormat('d LLLL yyyy');
-                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, groupId, gainsPeriod, 'ehb')];
+                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, env_constants_js_1.GROUP_ID, gainsPeriod, 'ehb')];
                 case 1:
                     ehbStats = _a.sent();
-                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, groupId, gainsPeriod, 'ehp')];
+                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, env_constants_js_1.GROUP_ID, gainsPeriod, 'ehp')];
                 case 2:
                     ehpStats = _a.sent();
-                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, groupId, gainsPeriod, 'overall')];
+                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, env_constants_js_1.GROUP_ID, gainsPeriod, 'overall')];
                 case 3:
                     expStats = _a.sent();
                     message = (0, utils_2.buildMessage)([], 'month', {
@@ -154,7 +155,7 @@ function getMonthlyGains(msg, groupId, periodObject) {
     });
 }
 exports.getMonthlyGains = getMonthlyGains;
-function getGroupCompetitions(msg, groupId) {
+function getGroupCompetitions(msg) {
     return __awaiter(this, void 0, void 0, function () {
         var now_1, ongoingComps_1, futureComps_1, competitions, message, e_4;
         return __generator(this, function (_a) {
@@ -164,7 +165,7 @@ function getGroupCompetitions(msg, groupId) {
                     now_1 = new Date();
                     ongoingComps_1 = [];
                     futureComps_1 = [];
-                    return [4 /*yield*/, womClient.groups.getGroupCompetitions(groupId)];
+                    return [4 /*yield*/, womClient.groups.getGroupCompetitions(env_constants_js_1.GROUP_ID)];
                 case 1:
                     competitions = _a.sent();
                     message = '';
@@ -202,7 +203,7 @@ function getGroupCompetitions(msg, groupId) {
     });
 }
 exports.getGroupCompetitions = getGroupCompetitions;
-function getCompCalendar(msg, groupId) {
+function getCompCalendar(msg) {
     return __awaiter(this, void 0, void 0, function () {
         var now_2, competitions, compCalendar_1, message, e_5;
         return __generator(this, function (_a) {
@@ -210,7 +211,7 @@ function getCompCalendar(msg, groupId) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     now_2 = new Date();
-                    return [4 /*yield*/, womClient.groups.getGroupCompetitions(groupId)];
+                    return [4 /*yield*/, womClient.groups.getGroupCompetitions(env_constants_js_1.GROUP_ID)];
                 case 1:
                     competitions = _a.sent();
                     compCalendar_1 = [];
@@ -563,12 +564,12 @@ function getBalance(msg, username) {
     });
 }
 exports.getBalance = getBalance;
-function getPetsOrLogTopTen(msg, groupId, metric) {
+function getPetsOrLogTopTen(msg, metric) {
     return __awaiter(this, void 0, void 0, function () {
         var usernames, resArray, arrayOfObjects, sortedResArray, arrayOfObjects, sortedResArray;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getAllDisplayNames(groupId)];
+                case 0: return [4 /*yield*/, getAllDisplayNames(env_constants_js_1.GROUP_ID)];
                 case 1:
                     usernames = _a.sent();
                     msg.reply("Please wait while I fetch the top 10 for the metric \"".concat(metric, "\". (approx. ").concat(((((usernames === null || usernames === void 0 ? void 0 : usernames.length) || 30) / 30 + 1) *
