@@ -44,10 +44,10 @@ var handling_1 = require("./errors/handling");
 var utils_2 = require("./utils/utils");
 var points_1 = require("./points");
 var discord_js_1 = require("discord.js");
-var messages_js_1 = require("../constants/messages.js");
+var messages_1 = require("../constants/messages");
 var luxon_1 = require("luxon");
 var blacklist_1 = require("../constants/blacklist");
-var env_constants_js_1 = require("../constants/env.constants.js");
+var env_constants_1 = require("../constants/env.constants");
 var womClient = new utils_1.WOMClient();
 function getAllDisplayNames(groupId) {
     return __awaiter(this, void 0, void 0, function () {
@@ -97,7 +97,7 @@ function getTopTen(msg, metric) {
                         .slice(0, 10);
                     msg.reply((0, utils_2.buildMessage)(sortedPointsArray, metric));
                     return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, womClient.groups.getGroupDetails(env_constants_js_1.GROUP_ID)];
+                case 4: return [4 /*yield*/, womClient.groups.getGroupDetails(env_constants_1.GROUP_ID)];
                 case 5:
                     memberships = (_b.sent()).memberships;
                     sortedMemberships = (0, utils_2.sortMembershipsByMetric)(memberships, metric)
@@ -127,13 +127,13 @@ function getMonthlyGains(msg, periodObject) {
                     gainsPeriod = (0, utils_2.getStartToEndPeriod)(periodObject);
                     sdString = luxon_1.DateTime.fromISO(gainsPeriod.startDate).toFormat('d LLLL yyyy');
                     edString = luxon_1.DateTime.fromISO(gainsPeriod.endDate).toFormat('d LLLL yyyy');
-                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, env_constants_js_1.GROUP_ID, gainsPeriod, 'ehb')];
+                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, env_constants_1.GROUP_ID, gainsPeriod, 'ehb')];
                 case 1:
                     ehbStats = _a.sent();
-                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, env_constants_js_1.GROUP_ID, gainsPeriod, 'ehp')];
+                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, env_constants_1.GROUP_ID, gainsPeriod, 'ehp')];
                 case 2:
                     ehpStats = _a.sent();
-                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, env_constants_js_1.GROUP_ID, gainsPeriod, 'overall')];
+                    return [4 /*yield*/, (0, utils_2.fetchGroupGains)(womClient, env_constants_1.GROUP_ID, gainsPeriod, 'overall')];
                 case 3:
                     expStats = _a.sent();
                     message = (0, utils_2.buildMessage)([], 'month', {
@@ -165,7 +165,7 @@ function getGroupCompetitions(msg) {
                     now_1 = new Date();
                     ongoingComps_1 = [];
                     futureComps_1 = [];
-                    return [4 /*yield*/, womClient.groups.getGroupCompetitions(env_constants_js_1.GROUP_ID)];
+                    return [4 /*yield*/, womClient.groups.getGroupCompetitions(env_constants_1.GROUP_ID)];
                 case 1:
                     competitions = _a.sent();
                     message = '';
@@ -211,7 +211,7 @@ function getCompCalendar(msg) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     now_2 = new Date();
-                    return [4 /*yield*/, womClient.groups.getGroupCompetitions(env_constants_js_1.GROUP_ID)];
+                    return [4 /*yield*/, womClient.groups.getGroupCompetitions(env_constants_1.GROUP_ID)];
                 case 1:
                     competitions = _a.sent();
                     compCalendar_1 = [];
@@ -390,9 +390,14 @@ function getPlayerBossStat(msg, metric, playerName) {
     });
 }
 exports.getPlayerBossStat = getPlayerBossStat;
-function getCommands(msg) {
+function getCommands(msg, isAdmin) {
+    if (isAdmin === void 0) { isAdmin = false; }
     try {
-        var message = "The Degeneration bot supports the following commands:\n```".concat(messages_js_1.COMMAND_MESSAGES.join(''), "\nThe boss_identifier is typically the name of the boss in lowercase, separated by underscores, e.g. thermonuclear_smoke_devil or chambers_of_xeric. We are working on allowing certain common abbreviations as well (e.g. cox or tob or thermy, etc...).```");
+        var message = 'The Degeneration bot supports the following commands:\n';
+        if (isAdmin) {
+            message += "For Admins:\n```".concat(messages_1.ADMIN_COMMAND_MESSAGES.join(''), "```");
+        }
+        message += "For Regular members:\n```".concat(messages_1.COMMAND_MESSAGES.join(''), "\nThe boss_identifier is typically the name of the boss in lowercase, separated by underscores, e.g. thermonuclear_smoke_devil or chambers_of_xeric. We are working on allowing certain common abbreviations as well (e.g. cox or tob or thermy, etc...).```");
         msg.reply(message);
     }
     catch (e) {
@@ -569,7 +574,7 @@ function getPetsOrLogTopTen(msg, metric) {
         var usernames, resArray, arrayOfObjects, sortedResArray, arrayOfObjects, sortedResArray;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getAllDisplayNames(env_constants_js_1.GROUP_ID)];
+                case 0: return [4 /*yield*/, getAllDisplayNames(env_constants_1.GROUP_ID)];
                 case 1:
                     usernames = _a.sent();
                     msg.reply("Please wait while I fetch the top 10 for the metric \"".concat(metric, "\". (approx. ").concat(((((usernames === null || usernames === void 0 ? void 0 : usernames.length) || 30) / 30 + 1) *

@@ -45,6 +45,7 @@ var process = require("process");
 var local_auth_1 = require("@google-cloud/local-auth");
 var googleapis_1 = require("googleapis");
 var spreadsheetId = process.env.POINTS_SPREADSHEET_ID;
+var publicPath = process.env.PUBLIC_PATH;
 // TODO: WIP!! Right now can only get balance by username
 // Future release will include option to update balance
 // If modifying these scopes, delete token.json.
@@ -167,7 +168,7 @@ function listUsersPoints(auth) {
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, fs.writeFile('src/public/output/regen-points.txt', output)];
+                    return [4 /*yield*/, fs.writeFile("".concat(publicPath, "/output/regen-points.txt"), output)];
                 case 3:
                     _a.sent();
                     console.log('The points file has been updated.');
@@ -189,7 +190,7 @@ function getPointsByUsername(username) {
                 case 0:
                     // First make sure the local coins file is up to date with the spreadsheet (SSOT)
                     updatePointsFile();
-                    return [4 /*yield*/, fs.readFile('src/public/output/regen-points.txt', 'utf-8')];
+                    return [4 /*yield*/, fs.readFile("".concat(publicPath, "/output/regen-points.txt"), 'utf-8')];
                 case 1:
                     file = _b.sent();
                     lines = file.split('\n');
@@ -240,7 +241,7 @@ function getAllPointsSorted() {
             switch (_a.label) {
                 case 0:
                     updatePointsFile();
-                    return [4 /*yield*/, fs.readFile('src/public/output/regen-points.txt', 'utf-8')];
+                    return [4 /*yield*/, fs.readFile("".concat(publicPath, "/output/regen-points.txt"), 'utf-8')];
                 case 1:
                     file = _a.sent();
                     lines = file.split('\n');
@@ -282,7 +283,7 @@ exports.getAllPointsSorted = getAllPointsSorted;
 //   }
 // }
 // async function addPointsToUser(username, points) {
-//   const res = await fs.readFile('src/public/output/regen-points.txt', 'utf-8');
+//   const res = await fs.readFile(`${publicPath}/output/regen-points.txt`, 'utf-8');
 //   return res
 //     .split('\n')
 //     .map((u) => {
@@ -308,5 +309,5 @@ exports.getAllPointsSorted = getAllPointsSorted;
 //   return content.split('\n').join(',');
 // }
 // const outputing = await addPointsToUser("Belgiska", 23);
-// saveToFile(outputing, "src/public/output/regen-points.txt");
+// saveToFile(outputing, `${publicPath}/output/regen-points.txt`);
 // authorize().then(listUsersPoints).catch(console.error);

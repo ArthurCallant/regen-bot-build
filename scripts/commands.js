@@ -5,6 +5,10 @@ var wom_1 = require("./wom");
 var bingo_1 = require("./bingo");
 function adminCommands(msg, command, args) {
     switch (command) {
+        case '!help':
+        case '/help':
+        case '?help':
+            (0, wom_1.getCommands)(msg, true);
         case '?sotw':
             (0, wom_1.getResults)(msg, parseInt(args[0]), 'sotw');
             break;
@@ -54,7 +58,6 @@ function standardUserCommands(msg, command, args) {
         case '!help':
         case '/help':
         case '?help':
-            // TODO explain changes to permissions, and that certain users can't use certain commands anymore
             (0, wom_1.getCommands)(msg);
             break;
         case '?calc':
